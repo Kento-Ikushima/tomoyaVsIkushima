@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>選択ゲーム</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>選択ゲーム</title>
 <style>
 body {
   font-family: sans-serif;
@@ -20,16 +21,18 @@ h1 {
   justify-content: center; /* 中央揃え */
   align-items: flex-start; /* 上揃え */
   flex-wrap: nowrap; /* 画像を横並びにする（折り返さない） */
-  gap: 10px; /* 画像間のスペース */
+  gap: 15px; /* 画像間のスペースを少し増やす */
   max-width: 100%; /* 親要素の幅に合わせる */
   margin: 0 auto 20px;
   overflow-x: auto; /* スマホで横スクロール可能にする */
   padding-bottom: 5px; /* スクロールバーが見えるように少しスペース */
+  padding-left: 10px; /* 左右の余白を確保 */
+  padding-right: 10px; /* 左右の余白を確保 */
 }
 .box {
   flex-shrink: 0; /* 画像が縮まないようにする */
-  width: 150px; /* 画像の幅を小さく */
-  height: 150px; /* 画像の高さを小さく（正方形に近くする） */
+  width: 180px; /* ここを変更: 画像の幅を大きく */
+  height: 180px; /* ここを変更: 画像の高さを大きく（正方形に近くする） */
   background-color: #ffffff;
   border: 2px solid #333;
   border-radius: 10px;
@@ -39,10 +42,10 @@ h1 {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, opacity 0.3s, transform 0.3s; /* transformも追加 */
+  transition: background-color 0.3s, opacity 0.3s, transform 0.3s, box-shadow 0.3s, border-color 0.3s; /* transitionをすべて維持 */
   overflow: hidden;
   position: relative;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* 影を追加 */
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 .box img {
   width: 100%;
@@ -63,6 +66,7 @@ h1 {
   background-color: #a0e0a0; /* 選択されたボックスのハイライト色 */
   border-color: #008000; /* ボーダー色も変更 */
   transform: scale(1.05); /* 少し拡大して選択されたことを強調 */
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.3); /* 影も強調 */
 }
 
 #result {
@@ -75,15 +79,15 @@ h1 {
 /* スマートフォンでの表示調整 */
 @media (max-width: 768px) {
   .box {
-    width: 120px; /* さらに小さく */
-    height: 120px; /* さらに小さく */
+    width: 140px; /* さらに小さく */
+    height: 140px; /* さらに小さく */
   }
 }
 
 @media (max-width: 480px) {
   .box {
-    width: 100px; /* 最も小さく */
-    height: 100px; /* 最も小さく */
+    width: 120px; /* 最も小さく */
+    height: 120px; /* 最も小さく */
   }
 }
 
