@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>選択ゲーム</title>
+<style>
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 10px; /* モバイル向けにパディングを調整 */
+  background-color: #f0f0f0;
+  margin: 0; /* bodyのデフォルトマージンを削除 */
+}
+h1 {
+  margin-bottom: 20px; /* モバイル向けにマージンを調整 */
+  font-size: 1.5em; /* フォントサイズを小さく */
+}
+.box-container {
+  display: flex;
+  justify-content: center; /* 中央揃え */
+  align-items: flex-start; /* 上揃え */
+  flex-wrap: nowrap; /* 画像を横並びにする（折り返さない） */
+  gap: 10px; /* 画像間のスペース */
+  max-width: 100%; /* 親要素の幅に合わせる */
+  margin: 0 auto 20px;
+  overflow-x: auto; /* スマホで横スクロール可能にする */
+  padding-bottom: 5px; /* スクロールバーが見えるように少しスペース */
+}
+.box {
+  flex-shrink: 0; /* 画像が縮まないようにする */
+  width: 150px; /* 画像の幅を小さく */
+  height: 150px; /* 画像の高さを小さく（正方形に近くする） */
+  background-color: #ffffff;
+  border: 2px solid #333;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s, transform 0.3s; /* transformも追加 */
+  overflow: hidden;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* 影を追加 */
+}
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像をボックスに収まるように調整 */
+  border-radius: 8px; /* 親要素のボーダーラディウスに合わせる */
+}
+
+/* 非活性時のスタイル */
+.box.disabled {
+  cursor: default;
+  opacity: 0.6; /* 透明度を下げて非活性感を出す */
+  pointer-events: none; /* クリックイベントを無効にする */
+}
+
+/* 選択されたボックスのハイライトスタイル */
+.box.selected-highlight {
+  background-color: #a0e0a0; /* 選択されたボックスのハイライト色 */
+  border-color: #008000; /* ボーダー色も変更 */
+  transform: scale(1.05); /* 少し拡大して選択されたことを強調 */
+}
+
+#result {
+  font-size: 1.2em; /* フォントサイズを小さく */
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* スマートフォンでの表示調整 */
+@media (max-width: 768px) {
+  .box {
+    width: 120px; /* さらに小さく */
+    height: 120px; /* さらに小さく */
+  }
+}
+
+@media (max-width: 480px) {
+  .box {
+    width: 100px; /* 最も小さく */
+    height: 100px; /* 最も小さく */
+  }
+}
+
+</style>
+</head>
+<body>
+<h1>どちらかを選んでください</h1>
+<div class="box-container">
+<div class="box" id="boxA">
+  <img src="IMG_9033.JPG" alt="画像A">
+</div>
+<div class="box" id="boxB">
+  <img src="IMG_0520.jpg" alt="画像B">
+</div>
+</div>
+<p id="result"></p>
+<script>
+const key = "selection_result";
+const selectedKey = "selected_box";
+const boxA = document.getElementById("boxA");
+const boxB = document.getElementById("boxB");
+const resultText = document.getElementById("result");
+
+function disableBoxes(selectedId) {
+  // すべてのボックスを非活性にする
+  boxA.classList.add("disabled");
+  boxB.classList.add("disabled");
+
+  // 選択されたボックスにハイライトクラスを追加
+  if (selectedId === "boxA") {
+    boxA.classList.add("selected-highlight");
+  } else if (selectedId === "boxB") {
+    boxB.classList.add("selected-highlight");
+  }
+}
+
+function showResult(result) {
+  resultText.textContent = "結果：" + result;
+}
+
+function handleSelection(boxId) {
+  if (localStorage.getItem(key)) return; // 既に選択済みなら何もしない
+
+  const options = ["ともやはセカンド", "ともやはサード"];
+  const result = options[Math.floor(Math.random() * options.length)];
+
+  localStorage.setItem(key, result);
+  localStorage.setItem(selectedKey, boxId);
+
+  disableBoxes(boxId); // ボックスの非活性化とハイライト
+  showResult(result);
+}
+
+// ページ読み込み時にlocalStorageに保存された状態を復元
+if (localStorage.getItem(key)) {
+  const savedBox = localStorage.getItem(selectedKey);
+  disableBoxes(savedBox); // 保存された選択に基づいてボックスを非活性化
+  showResult(localStorage.getItem(key));
+} else {
+  // まだ選択されていない場合のみイベントリスナーを設定
+  boxA.addEventListener("click", () => handleSelection("boxA"));
+  boxB.addEventListener("click", () => handleSelection("boxB"));
+}
+</script>
+</body>
+</html>
